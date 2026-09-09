@@ -1,0 +1,34 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.1/schema.json",
+  "schema_version": "v2.1",
+  "name_for_human": "BoostBoost Emotion Check-in",
+  "description_for_human": "Record and review teammates' emotion check-ins.",
+  "namespace": "boostboostEmotionCheckin",
+  "functions": [
+    {
+      "name": "recordEmotionCheckin",
+      "description": "Records how a user is feeling right now, with an optional note and intensity."
+    },
+    {
+      "name": "getEmotionHistory",
+      "description": "Fetches a user's recent emotion check-ins, most recent first."
+    },
+    {
+      "name": "getEmotionSummary",
+      "description": "Summarizes a user's mood over a recent period: average score, mood counts, latest check-in."
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "OpenApi",
+      "auth": {
+        "type": "ApiKeyPluginVault",
+        "reference_id": "BOOSTBOOST_API_KEY_REGISTRATION_ID"
+      },
+      "spec": {
+        "url": "openapi.yaml"
+      },
+      "run_for_functions": ["recordEmotionCheckin", "getEmotionHistory", "getEmotionSummary"]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.19/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.19",
+  "version": "1.0.0",
+  "id": "35cc3a95-0d0f-4c8f-9f47-af98a1ed644b",
+  "developer": {
+    "name": "REPLACE_WITH_YOUR_ORG_NAME",
+    "websiteUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL",
+    "privacyUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL/privacy",
+    "termsOfUseUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL/terms"
+  },
+  "name": {
+    "short": "BoostBoost Check-in",
+    "full": "BoostBoost Emotion Check-in"
+  },
+  "description": {
+    "short": "Log and review how you're feeling",
+    "full": "Helps teammates log how they're feeling and review mood trends over time."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#FFFFFF",
+  "copilotAgents": {
+    "declarativeAgents": [
+      {
+        "id": "declarativeAgent",
+        "file": "declarativeAgent.json"
+      }
+    ]
+  },
+  "permissions": [],
+  "validDomains": []
+}
