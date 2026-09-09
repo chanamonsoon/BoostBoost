@@ -1,0 +1,175 @@
+openapi: 3.0.1
+info:
+  title: BoostBoost Emotion Check-in API
+  description: Record and review a user's mood check-ins.
+  version: 1.0.0
+servers:
+  - url: https://REPLACE-WITH-YOUR-DEPLOYED-URL
+security:
+  - apiKeyAuth: []
+paths:
+  /api/emotion-checkin:
+    post:
+      operationId: recordEmotionCheckin
+      summary: Record an emotion check-in
+      description: >-
+        Records how a user is feeling right now. Call this whenever the user
+        shares their mood or asks to log a check-in.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckinInput"
+      responses:
+        "201":
+          description: Check-in recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmotionCheckin"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    get:
+      operationId: getEmotionHistory
+      summary: Get a user's recent emotion check-ins
+      description: Fetches recent emotion check-ins for a user, most recent first.
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 200
+        - name: sinceDays
+          in: query
+          required: false
+          description: Only include check-ins from the last N days.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Check-in history
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  entries:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/EmotionCheckin"
+  /api/emotion-checkin/summary:
+    get:
+      operationId: getEmotionSummary
+      summary: Get a summary of a user's mood over a recent period
+      description: >-
+        Summarizes a user's mood over a recent period: average mood score,
+        counts per mood, and the latest check-in. Useful for deciding whether
+        to follow up or celebrate progress.
+      parameters:
+        - name: userId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: periodDays
+          in: query
+          required: false
+          description: Number of days to summarize. Defaults to 7.
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        "200":
+          description: Mood summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmotionSummary"
+components:
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+  schemas:
+    Mood:
+      type: string
+      enum: [very_sad, sad, neutral, happy, very_happy]
+    CheckinInput:
+      type: object
+      required: [userId, mood]
+      properties:
+        userId:
+          type: string
+          description: Stable identifier for the user, e.g. their Teams display name or UPN.
+        mood:
+          $ref: "#/components/schemas/Mood"
+        intensity:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: Optional intensity of the mood, 1 (mild) to 10 (extreme).
+        note:
+          type: string
+          maxLength: 1000
+          description: Optional free-text note about why they feel this way.
+        tags:
+          type: array
+          items:
+            type: string
+    EmotionCheckin:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        mood:
+          $ref: "#/components/schemas/Mood"
+        intensity:
+          type: integer
+        note:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+    EmotionSummary:
+      type: object
+      properties:
+        userId:
+          type: string
+        periodDays:
+          type: integer
+        totalCheckins:
+          type: integer
+        averageScore:
+          type: number
+          nullable: true
+        moodCounts:
+          type: object
+          additionalProperties:
+            type: integer
+        latest:
+          $ref: "#/components/schemas/EmotionCheckin"
+    Error:
+      type: object
+      properties:
+        error:
+          type: string

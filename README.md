@@ -89,3 +89,13 @@ Steps on Railway:
 This is a single JSON-file store, fine for a prototype/single instance but
 not for multiple replicas or serious scale — swap `src/core/storage.ts` for
 a real database (e.g. Postgres) before that matters.
+
+Set `BOOSTBOOST_API_KEY` on the deployed instance — without it, `/api/*`
+routes are unauthenticated (fine for local dev, not for anything public).
+Callers must send it back as the `x-api-key` header.
+
+## Microsoft 365 Copilot / Teams agent
+
+See [`teams-agent/`](./teams-agent/) — wires this API into Teams and M365
+Copilot as a declarative agent (an "agent copilot" that lives inside Teams
+chat), using the deployed REST API as its action backend.

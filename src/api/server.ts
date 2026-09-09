@@ -9,6 +9,25 @@ export function createApp() {
     res.json({ status: "ok" });
   });
 
+  const requiredApiKey = process.env.BOOSTBOOST_API_KEY;
+  if (!requiredApiKey) {
+    console.warn(
+      "BOOSTBOOST_API_KEY is not set — /api routes are unauthenticated. Set it before exposing this server publicly."
+    );
+  }
+
+  app.use("/api", (req, res, next) => {
+    if (!requiredApiKey) {
+      next();
+      return;
+    }
+    if (req.header("x-api-key") !== requiredApiKey) {
+      res.status(401).json({ error: "unauthorized" });
+      return;
+    }
+    next();
+  });
+
   app.post("/api/emotion-checkin", async (req, res) => {
     try {
       const entry = await recordCheckin(req.body ?? {});
