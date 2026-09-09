@@ -22,18 +22,23 @@ actions are server-to-server HTTP calls; nothing here can call `localhost`.
 
 ## Before you package this
 
-1. **Deploy the API** and get its public HTTPS URL.
-2. Set `BOOSTBOOST_API_KEY` on the deployed API to a real secret (the server
-   already enforces it — see `src/api/server.ts`).
-3. In `openapi.yaml`, replace `https://REPLACE-WITH-YOUR-DEPLOYED-URL` with
-   that URL.
-4. In `manifest.json`, replace `REPLACE_WITH_YOUR_ORG_NAME` and the
-   `REPLACE-WITH-YOUR-DEPLOYED-URL` placeholders (developer info + URLs are
-   required fields for Teams app validation).
+1. ~~Deploy the API and get its public HTTPS URL.~~ ✅ Done —
+   `https://boostboost.onrender.com`. `openapi.yaml` and `manifest.json`
+   already point at it.
+2. Set `BOOSTBOOST_API_KEY` on the deployed API (Render → Environment) to a
+   real secret if you haven't already — the server enforces it whenever
+   it's set (see `src/api/server.ts`).
+3. In `manifest.json`, replace `REPLACE_WITH_YOUR_ORG_NAME` with your org's
+   name (required field for Teams app validation).
+4. `manifest.json`'s `privacyUrl`/`termsOfUseUrl` currently point at
+   `/privacy` and `/terms` on the deployed API, but **those pages don't
+   exist yet** — the API only serves `/health` and `/api/*`. Either add
+   real pages there or point these at wherever your org hosts a privacy
+   policy / ToS, before uploading.
 5. Register the API key in Teams Developer Portal (dev.teams.microsoft.com)
-   under "API key" / API plugin auth registrations, and copy the
-   registration id into `ai-plugin.json`'s
-   `runtimes[0].auth.reference_id` (currently
+   under "API key" / API plugin auth registrations, using the same value as
+   `BOOSTBOOST_API_KEY` above — then copy the registration id into
+   `ai-plugin.json`'s `runtimes[0].auth.reference_id` (currently
    `BOOSTBOOST_API_KEY_REGISTRATION_ID`). This step has to be done through
    the portal UI — there's no API for it.
 6. Add `color.png` and `outline.png` to this folder.
