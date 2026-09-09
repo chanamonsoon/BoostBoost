@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "start": "node dist/api/server.js",
     "start:api": "node dist/api/server.js",
     "start:mcp": "node dist/mcp/server.js",
     "dev:api": "tsx src/api/server.ts",

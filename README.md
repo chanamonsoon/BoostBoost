@@ -61,3 +61,31 @@ for local dev. It exposes three tools:
 npm run typecheck
 npm test
 ```
+
+## Deploying the REST API
+
+Only the REST API is meant to run as a hosted service — the MCP server talks
+stdio and is meant to run as a local subprocess next to whatever copilot is
+using it, not as something you deploy on its own.
+
+A `Dockerfile` is included (multi-stage build, runs `node dist/api/server.js`
+on `$PORT`, defaulting to 3000). Recommended host: **Railway** (or Render) —
+both build straight from this Dockerfile, give you a public URL, and support
+a persistent volume, which this service needs since check-ins are stored in
+a JSON file (`src/core/storage.ts`) rather than a database.
+
+Steps on Railway:
+
+1. New Project → Deploy from GitHub repo → pick this repo/branch. Railway
+   detects the `Dockerfile` automatically.
+2. Add a **Volume**, mount path `/app/data`. Without this, check-ins are
+   lost on every redeploy/restart (the container filesystem is ephemeral).
+3. Set the env var `BOOSTBOOST_DATA_FILE=/app/data/emotion-checkins.json`
+   (matches the Dockerfile default, but set it explicitly so it's obvious).
+4. Deploy. Railway injects `PORT` automatically; the server already reads
+   it.
+5. Verify: `curl https://<your-app>.up.railway.app/health` → `{"status":"ok"}`.
+
+This is a single JSON-file store, fine for a prototype/single instance but
+not for multiple replicas or serious scale — swap `src/core/storage.ts` for
+a real database (e.g. Postgres) before that matters.
