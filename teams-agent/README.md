@@ -28,13 +28,12 @@ actions are server-to-server HTTP calls; nothing here can call `localhost`.
 2. Set `BOOSTBOOST_API_KEY` on the deployed API (Render → Environment) to a
    real secret if you haven't already — the server enforces it whenever
    it's set (see `src/api/server.ts`).
-3. In `manifest.json`, replace `REPLACE_WITH_YOUR_ORG_NAME` with your org's
-   name (required field for Teams app validation).
-4. `manifest.json`'s `privacyUrl`/`termsOfUseUrl` currently point at
-   `/privacy` and `/terms` on the deployed API, but **those pages don't
-   exist yet** — the API only serves `/health` and `/api/*`. Either add
-   real pages there or point these at wherever your org hosts a privacy
-   policy / ToS, before uploading.
+3. ~~Set `manifest.json`'s developer name.~~ ✅ Done — set to "BoostBoost".
+   Change it if you want your org's actual name there instead.
+4. ~~`privacyUrl`/`termsOfUseUrl` need real pages.~~ ✅ Done — the API now
+   serves `/privacy` and `/terms` (see `src/api/server.ts`). Review the
+   wording there and adjust it if it doesn't match your org's actual data
+   handling before uploading.
 5. Register the API key in Teams Developer Portal (dev.teams.microsoft.com)
    under "API key" / API plugin auth registrations, using the same value as
    `BOOSTBOOST_API_KEY` above — then copy the registration id into

@@ -9,6 +9,27 @@ export function createApp() {
     res.json({ status: "ok" });
   });
 
+  app.get("/privacy", (_req, res) => {
+    res.type("html").send(
+      "<h1>BoostBoost Emotion Check-in — Privacy</h1>" +
+        "<p>This service stores the check-ins you or an agent copilot submit on your behalf: " +
+        "a user identifier, mood, and any optional note, intensity, or tags you include. " +
+        "Data is used only to show your own mood history and summaries back to you or the " +
+        "copilot acting for you, and is not shared with third parties. " +
+        "Contact your BoostBoost administrator to have your data reviewed or deleted.</p>"
+    );
+  });
+
+  app.get("/terms", (_req, res) => {
+    res.type("html").send(
+      "<h1>BoostBoost Emotion Check-in — Terms of Use</h1>" +
+        "<p>This is an internal wellbeing tool provided as-is, without warranty, for use by " +
+        "members of your organization. Don't use it to store data about people who haven't " +
+        "consented to a check-in being logged on their behalf. Access may be revoked or the " +
+        "service discontinued at any time.</p>"
+    );
+  });
+
   const requiredApiKey = process.env.BOOSTBOOST_API_KEY;
   if (!requiredApiKey) {
     console.warn(
