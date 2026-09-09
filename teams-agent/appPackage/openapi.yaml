@@ -4,7 +4,7 @@ info:
   description: Record and review a user's mood check-ins.
   version: 1.0.0
 servers:
-  - url: https://REPLACE-WITH-YOUR-DEPLOYED-URL
+  - url: https://boostboost.onrender.com
 security:
   - apiKeyAuth: []
 paths:

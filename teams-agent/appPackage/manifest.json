@@ -5,9 +5,9 @@
   "id": "35cc3a95-0d0f-4c8f-9f47-af98a1ed644b",
   "developer": {
     "name": "REPLACE_WITH_YOUR_ORG_NAME",
-    "websiteUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL",
-    "privacyUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL/privacy",
-    "termsOfUseUrl": "https://REPLACE-WITH-YOUR-DEPLOYED-URL/terms"
+    "websiteUrl": "https://boostboost.onrender.com",
+    "privacyUrl": "https://boostboost.onrender.com/privacy",
+    "termsOfUseUrl": "https://boostboost.onrender.com/terms"
   },
   "name": {
     "short": "BoostBoost Check-in",
