@@ -4,3 +4,4 @@ data/*.json
 !data/.gitkeep
 *.log
 .env
+package-lock.json
